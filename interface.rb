@@ -17,5 +17,7 @@ class Interface
       @player.cards << @pack_of_cards.deck.delete_at(rand(@pack_of_cards.deck.length))
       @dealer.cards << @pack_of_cards.deck.delete_at(rand(@pack_of_cards.deck.length))
     end
+    @player.account -= 10
+    @dealer.account -= 10
   end
 end
