@@ -7,7 +7,7 @@ class Deck
   def initialize
     @ranks = %w(6 7 8 9 10 J Q K A)
     @suits = %w(Spades Hearts Diamonds Clubs)
-    @deck = []
+    @deck  = []
 
     @suits.each do |suit|
       @ranks.size.times do |i|

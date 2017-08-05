@@ -1,9 +1,23 @@
-class Dealer
+require_relative 'common_actions'
+require_relative 'deck'
+require_relative 'card'
+require_relative 'bank'
 
-  attr_reader :cards
+class Dealer
+  include CommonActions
+
+  attr_reader :cards, :account
 
   def initialize
-    @account = 100
-    @cards = []
+    @cards   = {}
+    @account = Bank.new(100)
   end
 end
+
+# dealer = Dealer.new
+# dealer.take_card
+# dealer.take_card
+# dealer.take_card
+# puts dealer.sum_of_cards
+#
+# puts dealer.account.amount
