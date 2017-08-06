@@ -1,7 +1,6 @@
 require_relative 'card'
 
 class Deck
-
   attr_reader :deck
 
   def initialize
@@ -17,7 +16,3 @@ class Deck
     @deck.shuffle!
   end
 end
-
-# pack_of_cards = Deck.new
-#
-# puts pack_of_cards.deck[0].value

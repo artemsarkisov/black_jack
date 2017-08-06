@@ -8,7 +8,8 @@ require_relative 'bank'
 class Interface
   include CommonActions
 
-  @@player_options = ['1 - Pass', '2 - Take one more card', '3 - Show cards']
+  @@player_options = ['1 - Pass', '2 - Take one more card', '3 - Show cards',
+                      '4 - Play again', '5 - Exit']
 
   def initialize
     puts 'Enter your name'
@@ -30,6 +31,13 @@ class Interface
     player_choice
   end
 
+  def start_again
+    @player.cards.clear
+    @dealer.cards.clear
+    @pack_of_cards = Deck.new
+    start_game
+  end
+
   private
 
   def see_cards_and_sum
@@ -40,10 +48,14 @@ class Interface
   end
 
   def player_choice
+    raise 'Game over!' if @player.account.amount.zero? || @dealer.account.amount.zero?
     puts 'Enter your choice:'
     @@player_options.each { |option| puts option.to_s }
     @choice = gets.chomp.to_i
     player_actions
+  rescue => e
+    puts e.message
+    exit
   end
 
   def player_actions
@@ -56,9 +68,13 @@ class Interface
       dealer_actions
     when 3
       game_result
+    when 4
+      start_again
+    when 5
+      exit
     else
       puts 'Unknown action'
-      nil
+      player_choice
     end
   end
 
@@ -87,18 +103,21 @@ class Interface
     @dealer.show_cards @block
     puts "#{@player.name}'s score: #{@player.sum} | Dealer's score: #{@dealer.sum}"
     result_logic
+    player_choice
   end
 
   def result_logic
     if @player.sum <= 21 && @player.sum > @dealer.sum || @player.sum <= 21 && @dealer.sum > 21
       puts "#{@player.name} wins!"
       @player.winner_gain
+      @player.account.amount
+      @player.name
     elsif @dealer.sum <= 21 && @dealer.sum > @player.sum || @dealer.sum <= 21 && @player.sum > 21
       puts 'Dealer wins!'
       @dealer.winner_gain
     else
       puts 'Draw!'
-      @bank = 0
+      clear_bank
     end
   end
 end
